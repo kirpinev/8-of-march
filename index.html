@@ -310,8 +310,10 @@
     var certUrl = null;
     if (idx < CERTIFICATES.length) {
       certUrl = CERTIFICATES[idx];
-      localStorage.setItem(LS_IDX, idx + 1);
-      localStorage.setItem(LS_GOT, '1');
+      if (userName !== 'admin123') {
+        localStorage.setItem(LS_IDX, idx + 1);
+        localStorage.setItem(LS_GOT, '1');
+      }
     }
     document.getElementById('giftName').textContent = userName;
     document.getElementById('giftEmoji').textContent = chosen.emoji + ' 🎁';
@@ -331,6 +333,13 @@
     if (!userName) {
       input.focus(); input.style.borderColor = '#e07a91';
       setTimeout(function() { input.style.borderColor = ''; }, 1000);
+      return;
+    }
+    if (userName === 'admin123') {
+      localStorage.clear();
+      cardQueue = [];
+      rebuildStack();
+      goTo('screen2');
       return;
     }
     if (localStorage.getItem(LS_GOT)) {
